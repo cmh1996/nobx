@@ -2,9 +2,9 @@
   "name": "nobx",
   "version": "1.0.0",
   "description": "My mini mobx",
-  "main": "index.js",
+  "main": "dist/nobx.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production webpack --config webpack.config.js --mode=production"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/cmh1996/nobx/issues"
   },
-  "homepage": "https://github.com/cmh1996/nobx#readme"
+  "homepage": "https://github.com/cmh1996/nobx#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.6.0"
+  }
 }
