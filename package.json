@@ -1,0 +1,19 @@
+{
+  "name": "nobx",
+  "version": "1.0.0",
+  "description": "My mini mobx",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmh1996/nobx.git"
+  },
+  "author": "chambers1996",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cmh1996/nobx/issues"
+  },
+  "homepage": "https://github.com/cmh1996/nobx#readme"
+}
