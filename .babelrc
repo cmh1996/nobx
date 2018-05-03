@@ -1,11 +1,9 @@
 {
   "presets": ["env"],
   "plugins": [
-    ["transform-runtime", {
-      "helpers": false,
-      "polyfill": false
-      }
-    ]
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "transform-class-properties"
   ],
   "env": {
     "test": {

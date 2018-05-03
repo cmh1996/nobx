@@ -2,6 +2,7 @@
 
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const resolve = dir => path.join(__dirname, '.', dir)
@@ -10,7 +11,8 @@ const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   entry: {
-    nobx: './src/index.js'
+    nobx: './src/index.js',
+    test: './src/example/test.js'
   },
   output: {
     path: resolve('dist'),
@@ -41,11 +43,17 @@ module.exports = {
           mangle: true
         },
         sourceMap: true
-      })
+      }),
+      new HtmlWebpackPlugin({
+          template: __dirname + '/src/example/test.html'
+      }),
     ]
     : [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NamedModulesPlugin(),
-      new webpack.NoEmitOnErrorsPlugin()
+      new webpack.NoEmitOnErrorsPlugin(),
+      new HtmlWebpackPlugin({
+            template: __dirname + '/src/example/test.html'
+        })
     ]
 }
