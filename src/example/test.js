@@ -1,16 +1,24 @@
-import {observable,autorun,computed} from '../index';
+import {observable,autorun,computed,action} from '../index';
 
 class testStore{
-	@observable data = {a:9,b:[1,2]};
-	@computed get dataA(){
-		return this.data.a;
+	@observable data = {
+		a:1,
+		b:2
+	};
+	@observable name = 'chambers';
+
+	@computed get plus(){
+		return (this.data[0]+this.name);
+	}
+
+	@action setData(val){
+		this.name = val;
 	}
 }
 
 const test = new testStore();
 
 autorun(()=>{
-	console.log(test.data.b,test.dataA);
+	console.log(test.data.a)
 })
-
-test.data.a = '111';
+test.data.a='wewewe';

@@ -1,9 +1,9 @@
-import dependenceManager from './dependenceManager';
+import globalState from './globalState';
 
 const autorun = function(cb){
-	dependenceManager.beginCollect(cb);
+	globalState.beginCollect(cb);
 	cb();
-	dependenceManager.endCollect();
+	globalState.endCollect();
 }
 
 export default autorun;

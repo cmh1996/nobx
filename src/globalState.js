@@ -1,18 +1,18 @@
-var nowObserver = null;
-var nowTarget = null;
+var curObserver = null;
+var curTarget = null;
 var observerStack = [];
 var targetStack = [];
 var isCollecting = false;
 
-const dependenceManager = {
+const globalState = {
 	//存储所有observable的全局ID和handler的映射关系
 	_store:{},
 
-	_addNowObserver(obID){
+	_addCurObserver(obID){
 		this._store[obID] = this._store[obID] || {};
-		this._store[obID].target = nowTarget;
+		this._store[obID].target = curTarget;
 		this._store[obID].watchers = this._store[obID].watchers || [];
-		this._store[obID].watchers.push(nowObserver);
+		this._store[obID].watchers.push(curObserver);
 	},
 
 	trigger(obID){
@@ -25,27 +25,27 @@ const dependenceManager = {
 	},
 
 	collect(obID){
-		if(nowObserver){
-			this._addNowObserver(obID);
+		if(curObserver){
+			this._addCurObserver(obID);
 		}
-		return false;
+		//return false;
 	},
 
 	beginCollect(observer,target){
 		isCollecting = true;
 		observerStack.push(observer);
 		targetStack.push(target);
-		nowObserver = observerStack.length>0?observerStack[observerStack.length-1]:null;
-		nowTarget = targetStack.length>0?targetStack[targetStack.length-1]:null;
+		curObserver = observerStack.length>0?observerStack[observerStack.length-1]:null;
+		curTarget = targetStack.length>0?targetStack[targetStack.length-1]:null;
 	},
 
 	endCollect(){
 		isCollecting = false;
 		observerStack.pop();
 		targetStack.pop();
-		nowObserver = observerStack.length>0?observerStack[observerStack.length-1]:null;
-		nowTarget = targetStack.length>0?targetStack[targetStack.length-1]:null;
+		curObserver = observerStack.length>0?observerStack[observerStack.length-1]:null;
+		curTarget = targetStack.length>0?targetStack[targetStack.length-1]:null;
 	}
 }
 
-export default dependenceManager;
+export default globalState;

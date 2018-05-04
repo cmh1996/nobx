@@ -1,7 +1,7 @@
 import Observable from './ObservableClass';
 
 //把原对象的get和set代理到$nobx这个代理对象上
-function createObservableProperty(obj,key){
+function extendObservableProperty(obj,key){
 	const $nobx = new Observable(obj[key]);
 	Object.defineProperty(obj,key,{
 		get(){
@@ -15,17 +15,17 @@ function createObservableProperty(obj,key){
 	if(typeof obj[key] === 'object'){
 		for(let i in obj[key]){
 			if(obj[key].hasOwnProperty(i)){
-				createObservableProperty(obj[key],i);
+				extendObservableProperty(obj[key],i);
 			}
 		}
 	}
 }
 
 //遍历对象中的每个key
-function createObservable(obj){
+function extendObservable(obj){
 	for(let key in obj){
 		if(obj.hasOwnProperty(key)){
-			createObservableProperty(obj,key);
+			extendObservableProperty(obj,key);
 		}
 	}
 }
@@ -40,7 +40,7 @@ function observable(target,name,descriptor){
 	*/
 	var value = descriptor.initializer.call(this);
 	if(typeof value === 'object'){
-		createObservable(value);
+		extendObservable(value);
 	}
 	var $nobx = new Observable(value);
 	return {
@@ -51,7 +51,7 @@ function observable(target,name,descriptor){
 		},
 		set:function(value){
 			if(typeof value === 'object'){
-				createObservable(value);
+				extendObservable(value);
 			}
 			return $nobx.set(value);
 		}

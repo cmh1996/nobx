@@ -1,24 +1,24 @@
-import dependenceManager from './dependenceManager';
+import globalState from './globalState';
 
 var obIDCounter = 0;
 class Observable{
 	constructor(value){
 		this.obID = 'ob-'+(obIDCounter++);
 		if(Array.isArray(value)){
-			this._wrapArrayProxy(value);
+			this._proxyArray(value);
 		}else{
 			this.value = value;
 		}
 	}
 
 	get(){
-		dependenceManager.collect(this.obID);
+		globalState.collect(this.obID);
 		return this.value;
 	}
 
 	set(value){
 		if(Array.isArray(value)){
-			this._wrapArrayProxy(value);
+			this._proxyArray(value);
 		}else{
 			this.value = value;
 		}
@@ -26,18 +26,19 @@ class Observable{
 	}
 
 	trigger(){
-		dependenceManager.trigger(this.obID);
+		globalState.trigger(this.obID);
 	}
 
 	//如果是数组的话，还要做一层拦截
-	_wrapArrayProxy(value){
+	_proxyArray(value){
 		this.value = new Proxy(value,{
-			set:(target,key,value)=>{
-				target[key] = value;
-				if(key!=='length'){
+			set:(target,key,value,receiver)=>{
+				const oldValue = Reflect.get(target,key,receiver);
+				const result = Reflect.set(target,key,value,receiver);
+				if (key === "length" || value !== oldValue) {
 					this.trigger();
-				}
-				return true;
+		        }
+				return result;
 			}
 		})
 	}
